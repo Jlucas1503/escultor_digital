@@ -51,9 +51,7 @@ void Sculptor::setColor(float r, float g, float b, float alpha){
 }
 
 void Sculptor::putVoxel(int x, int y, int z){
-    x = x;
-    y = y;
-    z = z;
+
     // a "instrução" .show está igual a true, para que o Voxel apareça na tela"
     v[x][y][z].show = true;
     v[x][y][z].r = r;
@@ -62,9 +60,9 @@ void Sculptor::putVoxel(int x, int y, int z){
 
 }
 void Sculptor::cutVoxel(int x, int y, int z){
-    x = x;
-    y = y;
-    z = z;
-
     v[x][y][z].show = false;
+}
+
+void putBox(int x0, int x1, int y0, int y1, int z0, int z1){
+    for(int x = x0; x <= x1; ) //continua...
 }
