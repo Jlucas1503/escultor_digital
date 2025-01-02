@@ -151,7 +151,7 @@ void writeOFF(const char* filename){
     Arquivofinal.open(filename);
 
     if(!Arquivofinal.is_open()){
-        cout << "Erro ao abrir o arquivo\n";
+        std::cout << "Erro ao abrir o arquivo\n";
         exit(1);
     }
 
@@ -167,7 +167,7 @@ void writeOFF(const char* filename){
             }
         }
     }
-}
+
 Arquivofinal << 8*qvoxels << " " << 6*qvoxels << " 0\n";
 
 for(int i = 0; i< nx; i++){
@@ -216,10 +216,16 @@ for(int i = 0; i< nx; i++){
             }
 
     if(Arquivofinal.is_open()){
-        cout << "Arquivo criado com sucesso\n";
+        std::cout << "Arquivo criado com sucesso\n";
     }
     else{
-        cout << "Erro ao criar o arquivo\n";
+        std::cout << "Erro ao criar o arquivo\n";
     }
 
     Arquivofinal.close();
+        }
+
+    }
+
+}
+}
