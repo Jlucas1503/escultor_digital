@@ -5,9 +5,9 @@
 
 
 Sculptor::Sculptor(int _nx, int _ny, int _nz){
-    _nx = nx;
-    _ny = ny;
-    _nz = nz;
+    nx = _nx;
+    ny = _ny;
+    nz = _nz;
     std::cout << "construtor iniciado\n";
 
     r = 0.5;
@@ -30,26 +30,26 @@ Sculptor::Sculptor(int _nx, int _ny, int _nz){
 Sculptor::~Sculptor(){
     std::cout << "destrutor chamado\n";
     for(int i =0; i< nx; i++){
-        for(int j =0; i< ny; j++){
-            delete v[i][j];
+        for(int j = 0; j < ny; j++){
+            delete[] v[i][j];
         }
     }
 
     for(int i =0; i< nx; i++){
-        delete v[i];
+        delete[] v[i];
     }
 
-    delete v;
+    delete[] v;
     
 /*detalhe, se atentar ao colchete, pode dar erro!!!! */
 
 }
 
 void Sculptor::setColor(float r, float g, float b, float alpha){
-    r = r;
-    g = g;
-    b = b;
-    alpha = alpha;
+    this->r = r;
+    this->g = g;
+    this->b = b;
+    this->a = alpha;
 }
 
 void Sculptor::putVoxel(int x, int y, int z){
@@ -65,7 +65,7 @@ void Sculptor::cutVoxel(int x, int y, int z){
     v[x][y][z].show = false;
 }
 
-void putBox(int x0, int x1, int y0, int y1, int z0, int z1){
+void Sculptor::putBox(int x0, int x1, int y0, int y1, int z0, int z1){
     for(int x = x0; x <= x1; x++){
         for(int y = y0; y <= y1; y++){
             for(int z = z0; z <= z1; z++){
@@ -78,7 +78,7 @@ void putBox(int x0, int x1, int y0, int y1, int z0, int z1){
     } 
 }
 
-void cutBox(int x0, int x1, int y0, int y1, int z0, int z1){
+void Sculptor::cutBox(int x0, int x1, int y0, int y1, int z0, int z1){
     for(int x = x0; x <= x1; x++){
         for(int y = y0; y <= y1; y++){
             for(int z = z0; z <= z1; z++){
@@ -87,7 +87,7 @@ void cutBox(int x0, int x1, int y0, int y1, int z0, int z1){
         }
     } 
 }
-void putSphere(int xcenter, int ycenter, int zcenter, int radius){
+void Sculptor::putSphere(int xcenter, int ycenter, int zcenter, int radius){
     for(int x = xcenter - radius; x <= xcenter + radius; x++){ // x + raio = x0, ou seja, x= x0 - raio
         for(int y = ycenter - radius; y <= ycenter + radius; y++){ // y + raio = y0, ou seja, y= y0 - raio
             for(int z = zcenter - radius; z <= zcenter + radius; z++){ // z + raio = z0, ou seja, z= z0 - raio
@@ -102,7 +102,7 @@ void putSphere(int xcenter, int ycenter, int zcenter, int radius){
     } 
 }
 
-void cutSphere(int xcenter, int ycenter, int zcenter, int radius){
+void Sculptor::cutSphere(int xcenter, int ycenter, int zcenter, int radius){
     for(int x = xcenter - radius; x <= xcenter + radius; x++){ // x + raio = x0, ou seja, x= x0 - raio
         for(int y = ycenter - radius; y <= ycenter + radius; y++){ // y + raio = y0, ou seja, y= y0 - raio
             for(int z = zcenter - radius; z <= zcenter + radius; z++){ // z + raio = z0, ou seja, z= z0 - raio
@@ -114,7 +114,7 @@ void cutSphere(int xcenter, int ycenter, int zcenter, int radius){
     } 
 }
 
-void putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
+void Sculptor::putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
     for(int x = xcenter - rx; x <= xcenter + rx; x++){ // x + raio = x0, ou seja, x= x0 - raio
         for(int y = ycenter - ry; y <= ycenter + ry; y++){ // y + raio = y0, ou seja, y= y0 - raio
             for(int z = zcenter - rz; z <= zcenter + rz; z++){ // z + raio = z0, ou seja, z= z0 - raio
@@ -129,7 +129,7 @@ void putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz)
     } 
 }
 
-void cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
+void Sculptor::cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
     for(int x = xcenter - rx; x <= xcenter + rx; x++){ // x + raio = x0, ou seja, x= x0 - raio
         for(int y = ycenter - ry; y <= ycenter + ry; y++){ // y + raio = y0, ou seja, y= y0 - raio
             for(int z = zcenter - rz; z <= zcenter + rz; z++){ // z + raio = z0, ou seja, z= z0 - raio
@@ -141,13 +141,13 @@ void cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz)
     }
 }
 
-void writeOFF(const char* filename){
-    ofstream fout;
+void Sculptor::writeOFF(const char* filename){
+    std::ofstream fout;
 
     int qvoxels = 0;
     int aux = 0;
 
-    ofstream Arquivofinal;
+    std::ofstream Arquivofinal;
     Arquivofinal.open(filename);
 
     if(!Arquivofinal.is_open()){
