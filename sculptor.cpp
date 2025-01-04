@@ -5,9 +5,9 @@
 
 
 Sculptor::Sculptor(int _nx, int _ny, int _nz){
-    nx = _nx;
-    ny = _ny;
-    nz = _nz;
+    this -> nx = _nx;
+    this -> ny = _ny;
+    this -> nz = _nz;
     std::cout << "construtor iniciado\n";
 
     r = 0.5;
@@ -17,11 +17,13 @@ Sculptor::Sculptor(int _nx, int _ny, int _nz){
 
     // criando agora nossa matriz 3d
     v = new Voxel**[nx];
+
     for(int i=0; i< nx; i++){
+
         v[i] = new Voxel*[ny];
 
-        for(int j=0; j < ny; j++){
-            v[i][j] = new Voxel[nz];
+    for(int j=0; j < ny; j++){
+        v[i][j] = new Voxel[nz];
 
         }
 }
@@ -187,12 +189,16 @@ for(int i = 0; i< nx; i++){
     }
 }
 
+qvoxels = 0;
+
 
 for(int i = 0; i< nx; i++){
     for(int j = 0; j < ny; j++){
         for(int k = 0; k < nz; k++){
             if(v[i][j][k].show == true){
-                if(v[i][j][k].show == true){
+                    aux = 8*qvoxels;
+                    Arquivofinal << std::fixed;
+
                     Arquivofinal << 4 << " " << aux+0 << " " << aux + 3 << " " << aux + 2 << " " << aux + 1 << " "
                      << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
@@ -211,21 +217,17 @@ for(int i = 0; i< nx; i++){
                     Arquivofinal << 4 << " " << aux+1 << " " << aux + 2 << " " << aux + 6 << " " << aux + 5 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
-                    aux = aux + 8;
+                    aux++;
                 }
             }
-
-    if(Arquivofinal.is_open()){
-        std::cout << "Arquivo criado com sucesso\n";
-    }
-    else{
-        std::cout << "Erro ao criar o arquivo\n";
-    }
-
-    Arquivofinal.close();
-        }
-
     }
 
 }
+
+
+if(Arquivofinal.is_open()){
+        std::cout << "Arquivo criado com sucesso\n";
+    }
+
+    Arquivofinal.close();
 }
