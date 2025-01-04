@@ -142,12 +142,12 @@ void Sculptor::cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int r
 }
 
 void Sculptor::writeOFF(const char* filename){
-    std::ofstream fout;
+    std::ofstream Arquivofinal;
 
     int qvoxels = 0;
     int aux = 0;
 
-    std::ofstream Arquivofinal;
+  //  std::ofstream Arquivofinal;
     Arquivofinal.open(filename);
 
     if(!Arquivofinal.is_open()){
@@ -193,22 +193,22 @@ for(int i = 0; i< nx; i++){
         for(int k = 0; k < nz; k++){
             if(v[i][j][k].show == true){
                 if(v[i][j][k].show == true){
-                    fout << 4 << " " << aux+0 << " " << aux + 3 << " " << aux + 2 << " " << aux + 1 << " "
+                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 3 << " " << aux + 2 << " " << aux + 1 << " "
                      << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
-                    fout << 4 << " " << aux+4 << " " << aux + 5 << " " << aux + 6 << " " << aux + 7 << " "
+                    Arquivofinal << 4 << " " << aux+4 << " " << aux + 5 << " " << aux + 6 << " " << aux + 7 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
-                    fout << 4 << " " << aux+0 << " " << aux + 1 << " " << aux + 5 << " " << aux + 4 << " "
+                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 1 << " " << aux + 5 << " " << aux + 4 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
                     
-                    fout << 4 << " " << aux+0 << " " << aux + 4 << " " << aux + 7 << " " << aux + 3 << " "
+                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 4 << " " << aux + 7 << " " << aux + 3 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
-                    fout << 4 << " " << aux+3 << " " << aux + 7 << " " << aux + 6 << " " << aux + 2 << " "
+                    Arquivofinal << 4 << " " << aux+3 << " " << aux + 7 << " " << aux + 6 << " " << aux + 2 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
-                    fout << 4 << " " << aux+1 << " " << aux + 2 << " " << aux + 6 << " " << aux + 5 << " "
+                    Arquivofinal << 4 << " " << aux+1 << " " << aux + 2 << " " << aux + 6 << " " << aux + 5 << " "
                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
 
                     aux = aux + 8;
