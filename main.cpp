@@ -55,7 +55,7 @@ int main() {
     Bolas.setColor(0.0, 0.0, 0.0 ,0.0); // preto
     Bolas.putVoxel(0, 87 , 25);
 
-    Bolas.writeOFF("Bola_americana.off");
+    Bolas.writeOFF("Bolas.off");
 
 
 
