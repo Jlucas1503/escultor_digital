@@ -1,6 +1,10 @@
-#include <iostream>
-#include <fstream>
 
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <cmath>
+#include <vector>
 #include "sculptor.h"
 
 
@@ -117,14 +121,26 @@ void Sculptor::cutSphere(int xcenter, int ycenter, int zcenter, int radius){
 }
 
 void Sculptor::putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
-    for(int x = xcenter - rx; x <= xcenter + rx; x++){ // x + raio = x0, ou seja, x= x0 - raio
-        for(int y = ycenter - ry; y <= ycenter + ry; y++){ // y + raio = y0, ou seja, y= y0 - raio
-            for(int z = zcenter - rz; z <= zcenter + rz; z++){ // z + raio = z0, ou seja, z= z0 - raio
-                if((x - xcenter)*(x - xcenter)/(rx*rx) + (y - ycenter)*(y - ycenter)/(ry*ry) + (z - zcenter)*(z - zcenter)/(rz*rz) <= 1){ // se a equação da elipse for verdadeira, então faz o voxel
-                    v[x][y][z].show = true;
-                    v[x][y][z].r = r;
-                    v[x][y][z].g = g;
-                    v[x][y][z].b = b;
+    float xnovo;
+    float ynovo;
+    float znovo;
+
+    for(int x = 0; x < nx; x++){ 
+
+        for(int y = 0; y < ny; y++){ 
+
+            for(int z = 0; z < nz; z++){
+
+                xnovo = ((float)(x-xcenter)*(float)(x-xcenter))/(rx * rx);
+                ynovo = ((float)(y-ycenter)*(float)(y-ycenter))/(ry * ry);
+                znovo = ((float)(z-zcenter)*(float)(z-zcenter))/(rz * rz);
+                if((xnovo + ynovo + znovo) <= 1){ // se a equação da elipse for verdade, então faz o voxel
+                putVoxel(x, y, z);
+                v[x][y][z].show = true;
+                v[x][y][z].r = r;
+                v[x][y][z].g = g;
+                v[x][y][z].b = b;
+
                 }
             }
         }
@@ -132,102 +148,102 @@ void Sculptor::putEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int r
 }
 
 void Sculptor::cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int ry, int rz){
-    for(int x = xcenter - rx; x <= xcenter + rx; x++){ // x + raio = x0, ou seja, x= x0 - raio
-        for(int y = ycenter - ry; y <= ycenter + ry; y++){ // y + raio = y0, ou seja, y= y0 - raio
-            for(int z = zcenter - rz; z <= zcenter + rz; z++){ // z + raio = z0, ou seja, z= z0 - raio
-                if((x - xcenter)*(x - xcenter)/(rx*rx) + (y - ycenter)*(y - ycenter)/(ry*ry) + (z - zcenter)*(z - zcenter)/(rz*rz) <= 1){ // se a equação da elipse for verdadeira, então deleta o voxel
-                    v[x][y][z].show = false;
+    float xnovo;
+    float ynovo;
+    float znovo;
+
+    for(int x = 0; x < nx; x++){ 
+
+        for(int y = 0; y < ny; y++){ 
+
+            for(int z = 0; z < nz; z++){
+
+                xnovo = ((float)(x-xcenter)*(float)(x-xcenter))/(rx * rx);
+                ynovo = ((float)(y-ycenter)*(float)(y-ycenter))/(ry * ry);
+                znovo = ((float)(z-zcenter)*(float)(z-zcenter))/(rz * rz);
+                if((xnovo + ynovo + znovo) <= 1){ // se a equação da elipse for verdade, então desfaz o voxel
+                cutVoxel(x, y, z);
+                v[x][y][z].show = true;
+                v[x][y][z].r = r;
+                v[x][y][z].g = g;
+                v[x][y][z].b = b;
+
                 }
             }
         }
     }
 }
-
 void Sculptor::writeOFF(const char* filename){
-    std::ofstream Arquivofinal;
 
-    int qvoxels = 0;
-    int aux = 0;
+  int quantvox = 0;
+  int ref;
+  std::ofstream Arqfinal;
+  Arqfinal.open(filename);
 
-  //  std::ofstream Arquivofinal;
-    Arquivofinal.open(filename);
+  Arqfinal<<"OFF\n";
 
-    if(!Arquivofinal.is_open()){
-        std::cout << "Erro ao abrir o arquivo\n";
-        exit(1);
-    }
-
-    Arquivofinal << "OFF\n";
-
-
-    for(int i = 0; i < nx; i++){
-        for(int j = 0; j < ny; j++){
-            for(int k = 0; k < nz; k++){
+  // varre todos os voxel e analisa os que devem ser exibidos no .off
+  for (int i = 0; i < nx; i++){
+      for (int j = 0; j <ny; j++){
+           for (int k = 0; k <nz; k++){
                 if(v[i][j][k].show == true){
-                    qvoxels++;
+                quantvox++;
                 }
-            }
-        }
-    }
+           }
+       }
+  }
+  Arqfinal<<quantvox * 8<<" "<<quantvox * 6 << " " << "0" << "\n"; // mostra a quantidade total de vertices, faces e arestas
 
-Arquivofinal << 8*qvoxels << " " << 6*qvoxels << " 0\n";
-
-for(int i = 0; i< nx; i++){
-    for(int j = 0; j < ny; j++){
-        for(int k = 0; k < nz; k++){
-            if(v[i][j][k].show == true){
-                Arquivofinal << i - 0.5 << " " << j + 0.5 << " " << k - 0.5 << "\n";
-                Arquivofinal << i - 0.5 << " " << j - 0.5 << " " << k - 0.5 << "\n";
-                Arquivofinal << i + 0.5 << " " << j - 0.5 << " " << k - 0.5 << "\n";
-                Arquivofinal << i + 0.5 << " " << j + 0.5 << " " << k - 0.5 << "\n";
-                Arquivofinal << i - 0.5 << " " << j + 0.5 << " " << k + 0.5 << "\n";
-                Arquivofinal << i - 0.5 << " " << j - 0.5 << " " << k + 0.5 << "\n";
-                Arquivofinal << i + 0.5 << " " << j - 0.5 << " " << k + 0.5 << "\n";
-                Arquivofinal << i + 0.5 << " " << j + 0.5 << " " << k + 0.5 << "\n";
-            }
-        }
-    }
-}
-
-qvoxels = 0;
-
-
-for(int i = 0; i< nx; i++){
-    for(int j = 0; j < ny; j++){
-        for(int k = 0; k < nz; k++){
-            if(v[i][j][k].show == true){
-                    aux = 8*qvoxels;
-                    Arquivofinal << std::fixed;
-
-                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 3 << " " << aux + 2 << " " << aux + 1 << " "
-                     << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-
-                    Arquivofinal << 4 << " " << aux+4 << " " << aux + 5 << " " << aux + 6 << " " << aux + 7 << " "
-                    << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-
-                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 1 << " " << aux + 5 << " " << aux + 4 << " "
-                    << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-                    
-                    Arquivofinal << 4 << " " << aux+0 << " " << aux + 4 << " " << aux + 7 << " " << aux + 3 << " "
-                    << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-
-                    Arquivofinal << 4 << " " << aux+3 << " " << aux + 7 << " " << aux + 6 << " " << aux + 2 << " "
-                    << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-
-                    Arquivofinal << 4 << " " << aux+1 << " " << aux + 2 << " " << aux + 6 << " " << aux + 5 << " "
-                    << v[i][j][k].r << " " << v[i][j][k].g << " " << v[i][j][k].b << " " << v[i][j][k].a << "\n";
-
-                    aux++;
+  for (int a = 0; a < nx; a++){
+      for (int b = 0; b < ny; b++){
+           for (int c = 0; c < nz; c++){
+                if(v[a][b][c].show == true){
+                Arqfinal << a - 0.5 << " " << b + 0.5 << " " << c - 0.5 << "\n" << std::flush;
+                Arqfinal << a - 0.5 << " " << b - 0.5 << " " << c - 0.5 << "\n" << std::flush;
+                Arqfinal << a + 0.5 << " " << b - 0.5 << " " << c - 0.5 << "\n" << std::flush;
+                Arqfinal << a + 0.5 << " " << b + 0.5 << " " << c - 0.5 << "\n" << std::flush;
+                Arqfinal << a - 0.5 << " " << b + 0.5 << " " << c + 0.5 << "\n" << std::flush;
+                Arqfinal << a - 0.5 << " " << b - 0.5 << " " << c + 0.5 << "\n" << std::flush;
+                Arqfinal << a + 0.5 << " " << b - 0.5 << " " << c + 0.5 << "\n" << std::flush;
+                Arqfinal << a + 0.5 << " " << b + 0.5 << " " << c + 0.5 << "\n" << std::flush;
                 }
-            }
-    }
+           }
+      }
+  }
 
-}
+  quantvox = 0;
 
+  // descrever cada voxel
+  for (int a= 0; a<nx; a++){
+      for (int b = 0; b<ny; b++){
+           for (int c= 0; c<nz; c++){
+                if(v[a][b][c].show == true){
+                ref = quantvox * 8;
+                Arqfinal << std::fixed;
 
-if(Arquivofinal.is_open()){
-        std::cout << "Arquivo criado com sucesso\n";
-    }
+                // montar linha que realiza a construção das faces a partir do vertices e mostrar as propriedades rgba do voxel
+                Arqfinal << "4" << " " << 0+ref << " " << 3+ref << " " << 2+ref << " " << 1+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
 
-    Arquivofinal.close();
+                Arqfinal << "4" << " " << 4+ref << " " << 5+ref << " " << 6+ref << " " << 7+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
+
+                Arqfinal << "4" << " " << 0+ref << " " << 1+ref << " " << 5+ref << " " << 4+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
+
+                Arqfinal << "4" << " " << 0+ref << " " << 4+ref << " " << 7+ref << " " << 3+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
+
+                Arqfinal << "4" << " " << 3+ref << " " << 7+ref << " " << 6+ref << " " << 2+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
+
+                Arqfinal << "4" << " " << 1+ref << " " << 2+ref << " " << 6+ref << " " << 5+ref << " ";
+                Arqfinal << std::setprecision(2)<<v[a][b][c].r << " " << std::setprecision(2)<<v[a][b][c].g <<" " << std::setprecision(2)<<v[a][b][c].b << " " << std::setprecision(2) << v[a][b][c].a << "\n";
+
+                quantvox = quantvox + 1;
+                }
+           }
+       }
+  }
+  Arqfinal.close();
 }
