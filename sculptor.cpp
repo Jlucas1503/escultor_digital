@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <cmath>
-#include <vector>
 #include "sculptor.h"
 
 
