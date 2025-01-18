@@ -161,11 +161,6 @@ void Sculptor::cutEllipsoid(int xcenter, int ycenter, int zcenter, int rx, int r
                 znovo = ((float)(z-zcenter)*(float)(z-zcenter))/(rz * rz);
                 if((xnovo + ynovo + znovo) <= 1){ // se a equação da elipse for verdade, então desfaz o voxel
                 cutVoxel(x, y, z);
-                v[x][y][z].show = true;
-                v[x][y][z].r = r;
-                v[x][y][z].g = g;
-                v[x][y][z].b = b;
-
                 }
             }
         }

@@ -58,6 +58,14 @@ int main() {
     Bolas.writeOFF("Bolas.off");
 
 
+    Sculptor bolinha(20,20,20);
+    bolinha.setColor(0.39,0.26,0.2,1.0); // marrom
+
+    bolinha.putSphere(10,10,10,5);
+    bolinha.cutSphere(10,10,10,3);
+    bolinha.writeOFF("bolinha.off");
+
+
 
 
     return 0;
