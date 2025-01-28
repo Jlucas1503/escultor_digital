@@ -10,10 +10,10 @@ protected:
    int x,y,z;
 public:
    putVoxel(int x, int y, int z);
-
+   ~putVoxel();
    void draw(Sculptor &t);
     
-    ~putVoxel();
+    
 
 
 };

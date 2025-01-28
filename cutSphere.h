@@ -7,13 +7,14 @@
 
 class cutSphere: public FiguraGeometrica{
 protected:
-   int x,y,z;
+   int xcenter, ycenter, zcenter, radius;
 public:
-   cutSphere(int xcenter, int ycenter, int zcenter, int radius);
+      cutSphere(int xcenter, int ycenter, int zcenter, int radius);
+      ~cutSphere();
 
-   void draw(Sculptor &t);
+      void draw(Sculptor &t);
     
-    ~cutSphere();
+   
 
 
 };

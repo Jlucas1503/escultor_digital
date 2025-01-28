@@ -7,9 +7,10 @@
 
 class putSphere: public FiguraGeometrica{
 protected:
-   int x,y,z;
+   int xcenter, ycenter, zcenter, radius;
+   float r, g, b, a;
 public:
-   putSphere(int xcenter, int ycenter, int zcenter, int radius);
+   putSphere(int xcenter, int ycenter, int zcenter, int radius, int r, int g, int b, int a);
 
    void draw(Sculptor &t);
     
